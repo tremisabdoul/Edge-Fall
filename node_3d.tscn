@@ -96,6 +96,7 @@ volumetric_fog_density = 0.1
 volumetric_fog_albedo = Color(0.768627, 0.988235, 0, 1)
 volumetric_fog_emission = Color(0.501961, 0, 1, 1)
 volumetric_fog_emission_energy = 0.1
+adjustment_enabled = true
 
 [node name="Node3D" type="Node3D"]
 
@@ -127,7 +128,7 @@ offset_left = 32.0
 offset_top = 40.0
 offset_right = 160.0
 offset_bottom = 64.0
-text = "0.00"
+text = "0.00 m/s"
 
 [node name="SpeedIndicator3" type="RichTextLabel" parent="CharacterBody3D/Head"]
 offset_left = 16.0

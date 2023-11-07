@@ -28,6 +28,9 @@ func _physics_process(delta):
 	var tickspeed = speed
 	var was_wallriding = is_wallriding
 	$Head.fov = ($Head.fov * 7 + 90 + (89*current_speed)/(current_speed+20))/8
+	$Head.attributes.dof_blur_near_distance = current_speed/10 + 1
+	$Head.attributes.dof_blur_amount = current_speed/1000 + .05
+	$Head.attributes.auto_exposure_scale = exp(current_speed-100) + .3
 	gravity = ProjectSettings.get_setting("physics/3d/default_gravity") * 4
 	jump_velocity = 7*2
 	is_wallriding = (
