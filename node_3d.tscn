@@ -1,13 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://03oya0d3xa6a"]
+[gd_scene load_steps=19 format=3 uid="uid://03oya0d3xa6a"]
 
 [ext_resource type="Script" path="res://CharacterBody3D.gd" id="1_krd1d"]
 
-[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_m8d3l"]
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_fk44m"]
+auto_exposure_enabled = true
 dof_blur_far_enabled = true
 dof_blur_far_distance = 20.0
-dof_blur_far_transition = 20.0
+dof_blur_far_transition = 100.0
 dof_blur_near_enabled = true
-dof_blur_amount = 0.02
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_6fsvv"]
 radius = 0.4
@@ -20,7 +20,6 @@ height = 1.8
 [sub_resource type="Gradient" id="Gradient_xkuct"]
 interpolation_mode = 1
 offsets = PackedFloat32Array(0, 0.5)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_fxsky"]
 gradient = SubResource("Gradient_xkuct")
@@ -31,21 +30,29 @@ fill_to = Vector2(0.4, 0.4)
 repeat = 1
 metadata/_snap_enabled = true
 
+[sub_resource type="Gradient" id="Gradient_eyhf4"]
+offsets = PackedFloat32Array(0, 0.184397, 0.368794, 0.51773, 0.652482, 0.815603, 1)
+colors = PackedColorArray(0.811253, 0.881794, 1, 1, 0.558415, 0.950353, 1, 1, 0.589986, 1, 0.400211, 1, 1, 0.860184, 0.548452, 1, 1, 0.833676, 0.797639, 1, 0.994025, 0.8037, 1, 1, 0.829149, 0.875375, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_iv6da"]
+gradient = SubResource("Gradient_eyhf4")
+fill_from = Vector2(0.75, 0.75)
+fill_to = Vector2(1, 1)
+repeat = 2
+metadata/_snap_enabled = true
+metadata/_snap_count = 4
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lxuqu"]
+transparency = 2
+alpha_scissor_threshold = 0.5
+alpha_antialiasing_mode = 0
 albedo_texture = SubResource("GradientTexture2D_fxsky")
-roughness = 0.0
-emission_texture = SubResource("GradientTexture2D_fxsky")
-ao_enabled = true
-ao_light_affect = 1.0
-ao_texture = SubResource("GradientTexture2D_fxsky")
-heightmap_enabled = true
-heightmap_scale = 16.0
-heightmap_deep_parallax = true
-heightmap_min_layers = 8
-heightmap_max_layers = 8
-heightmap_texture = SubResource("GradientTexture2D_fxsky")
+metallic = 0.5
+roughness = 0.5
+emission = Color(1, 1, 1, 1)
+emission_operator = 1
+emission_texture = SubResource("GradientTexture2D_iv6da")
 uv1_scale = Vector3(3, 2, 1)
-texture_filter = 1
 
 [sub_resource type="BoxMesh" id="BoxMesh_po31r"]
 material = SubResource("StandardMaterial3D_lxuqu")
@@ -82,21 +89,59 @@ sky_material = SubResource("ProceduralSkyMaterial_wqx6r")
 [sub_resource type="Environment" id="Environment_410x2"]
 background_mode = 2
 sky = SubResource("Sky_hc2xv")
-ssr_enabled = true
-ssr_max_steps = 256
-ssr_depth_tolerance = 1.01
-glow_blend_mode = 0
+ssr_max_steps = 512
+ssr_depth_tolerance = 128.0
+glow_blend_mode = 1
+volumetric_fog_density = 0.1
+volumetric_fog_albedo = Color(0.768627, 0.988235, 0, 1)
+volumetric_fog_emission = Color(0.501961, 0, 1, 1)
+volumetric_fog_emission_energy = 0.1
 
 [node name="Node3D" type="Node3D"]
 
 [node name="CharacterBody3D" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+collision_layer = 0
 script = ExtResource("1_krd1d")
 
 [node name="Head" type="Camera3D" parent="CharacterBody3D"]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.5, 0)
-attributes = SubResource("CameraAttributesPractical_m8d3l")
-fov = 37.8493
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+attributes = SubResource("CameraAttributesPractical_fk44m")
+
+[node name="WallRideStaminaBar" type="ColorRect" parent="CharacterBody3D/Head"]
+offset_left = 32.0
+offset_top = 96.0
+offset_right = 40.0
+offset_bottom = 104.0
+color = Color(0, 1, 1, 1)
+
+[node name="SpeedBar" type="ColorRect" parent="CharacterBody3D/Head"]
+offset_left = 32.0
+offset_top = 56.0
+offset_right = 64.0
+offset_bottom = 64.0
+color = Color(1, 0, 0, 1)
+
+[node name="SpeedIndicator" type="RichTextLabel" parent="CharacterBody3D/Head"]
+offset_left = 32.0
+offset_top = 40.0
+offset_right = 160.0
+offset_bottom = 64.0
+text = "0.00"
+
+[node name="SpeedIndicator3" type="RichTextLabel" parent="CharacterBody3D/Head"]
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 144.0
+offset_bottom = 40.0
+text = "Speed:"
+
+[node name="SpeedIndicator2" type="RichTextLabel" parent="CharacterBody3D/Head"]
+offset_left = 16.0
+offset_top = 72.0
+offset_right = 160.0
+offset_bottom = 96.0
+text = "Wall Ride Stamina:"
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
 mesh = SubResource("CapsuleMesh_6fsvv")
@@ -137,7 +182,6 @@ target_position = Vector3(0, -0.15, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.258819, 0.836516, 0.482963, -1.49012e-08, -0.5, 0.866025, 0.965926, -0.224144, -0.12941, 0, 5, 0)
-shadow_enabled = true
 
 [node name="Map" type="Node3D" parent="."]
 
@@ -945,3 +989,15 @@ material = SubResource("StandardMaterial3D_lxuqu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_410x2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -12)
+mesh = SubResource("CapsuleMesh_6fsvv")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20, 1, -1)
+mesh = SubResource("CapsuleMesh_6fsvv")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 1, -2)
+mesh = SubResource("CapsuleMesh_6fsvv")
