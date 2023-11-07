@@ -1,0 +1,947 @@
+[gd_scene load_steps=17 format=3 uid="uid://03oya0d3xa6a"]
+
+[ext_resource type="Script" path="res://CharacterBody3D.gd" id="1_krd1d"]
+
+[sub_resource type="CameraAttributesPractical" id="CameraAttributesPractical_m8d3l"]
+dof_blur_far_enabled = true
+dof_blur_far_distance = 20.0
+dof_blur_far_transition = 20.0
+dof_blur_near_enabled = true
+dof_blur_amount = 0.02
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_6fsvv"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_axsvl"]
+radius = 0.4
+height = 1.8
+
+[sub_resource type="Gradient" id="Gradient_xkuct"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.5)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_fxsky"]
+gradient = SubResource("Gradient_xkuct")
+width = 2048
+height = 2048
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.4, 0.4)
+repeat = 1
+metadata/_snap_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lxuqu"]
+albedo_texture = SubResource("GradientTexture2D_fxsky")
+roughness = 0.0
+emission_texture = SubResource("GradientTexture2D_fxsky")
+ao_enabled = true
+ao_light_affect = 1.0
+ao_texture = SubResource("GradientTexture2D_fxsky")
+heightmap_enabled = true
+heightmap_scale = 16.0
+heightmap_deep_parallax = true
+heightmap_min_layers = 8
+heightmap_max_layers = 8
+heightmap_texture = SubResource("GradientTexture2D_fxsky")
+uv1_scale = Vector3(3, 2, 1)
+texture_filter = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_po31r"]
+material = SubResource("StandardMaterial3D_lxuqu")
+size = Vector3(64, 1, 64)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_8dju4"]
+data = PackedVector3Array(-32, 0.5, 32, 32, 0.5, 32, -32, -0.5, 32, 32, 0.5, 32, 32, -0.5, 32, -32, -0.5, 32, 32, 0.5, -32, -32, 0.5, -32, 32, -0.5, -32, -32, 0.5, -32, -32, -0.5, -32, 32, -0.5, -32, 32, 0.5, 32, 32, 0.5, -32, 32, -0.5, 32, 32, 0.5, -32, 32, -0.5, -32, 32, -0.5, 32, -32, 0.5, -32, -32, 0.5, 32, -32, -0.5, -32, -32, 0.5, 32, -32, -0.5, 32, -32, -0.5, -32, 32, 0.5, 32, -32, 0.5, 32, 32, 0.5, -32, -32, 0.5, 32, -32, 0.5, -32, 32, 0.5, -32, -32, -0.5, 32, 32, -0.5, 32, -32, -0.5, -32, 32, -0.5, 32, 32, -0.5, -32, -32, -0.5, -32)
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_ypm84"]
+radius = 1.05
+radial_steps = 32
+sections = 2
+section_length = 0.5
+section_rings = 1
+
+[sub_resource type="TubeTrailMesh" id="TubeTrailMesh_pbeen"]
+radius = 0.95
+radial_steps = 32
+sections = 2
+section_length = 0.55
+section_rings = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_3i0g5"]
+size = Vector3(1.9, 1.1, 1.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_g5que"]
+size = Vector3(0.1, 1, 1)
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_wqx6r"]
+
+[sub_resource type="Sky" id="Sky_hc2xv"]
+sky_material = SubResource("ProceduralSkyMaterial_wqx6r")
+
+[sub_resource type="Environment" id="Environment_410x2"]
+background_mode = 2
+sky = SubResource("Sky_hc2xv")
+ssr_enabled = true
+ssr_max_steps = 256
+ssr_depth_tolerance = 1.01
+glow_blend_mode = 0
+
+[node name="Node3D" type="Node3D"]
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.8, 0)
+script = ExtResource("1_krd1d")
+
+[node name="Head" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, 0, 0.5, 0)
+attributes = SubResource("CameraAttributesPractical_m8d3l")
+fov = 37.8493
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CharacterBody3D"]
+mesh = SubResource("CapsuleMesh_6fsvv")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_axsvl")
+
+[node name="WallRide" type="Node3D" parent="CharacterBody3D"]
+
+[node name="Top" type="Node3D" parent="CharacterBody3D/WallRide"]
+
+[node name="Back" type="RayCast3D" parent="CharacterBody3D/WallRide/Top"]
+transform = Transform3D(8, 0, 0, 0, -3.49691e-07, 8, 0, -8, -3.49691e-07, 0, 0.1, 0)
+target_position = Vector3(0, -0.15, 0)
+
+[node name="Right" type="RayCast3D" parent="CharacterBody3D/WallRide/Top"]
+transform = Transform3D(-3.49691e-07, -8, -3.49691e-07, 0, -3.49691e-07, 8, -8, 3.49691e-07, 1.52855e-14, 0, 0.1, 0)
+target_position = Vector3(0, -0.15, 0)
+
+[node name="Left" type="RayCast3D" parent="CharacterBody3D/WallRide/Top"]
+transform = Transform3D(1.04907e-06, 8, 3.49691e-07, 0, -3.49691e-07, 8, 8, -1.04907e-06, -4.58565e-14, 0, 0.1, 0)
+target_position = Vector3(0, -0.15, 0)
+
+[node name="Bot" type="Node3D" parent="CharacterBody3D/WallRide"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.6, 0)
+
+[node name="Back" type="RayCast3D" parent="CharacterBody3D/WallRide/Bot"]
+transform = Transform3D(8, 0, 0, 0, -3.49691e-07, 8, 0, -8, -3.49691e-07, 0, 0.1, 0)
+target_position = Vector3(0, -0.15, 0)
+
+[node name="Right" type="RayCast3D" parent="CharacterBody3D/WallRide/Bot"]
+transform = Transform3D(-3.49691e-07, -8, -3.49691e-07, 0, -3.49691e-07, 8, -8, 3.49691e-07, 1.52855e-14, 0, 0.1, 0)
+target_position = Vector3(0, -0.15, 0)
+
+[node name="Left" type="RayCast3D" parent="CharacterBody3D/WallRide/Bot"]
+transform = Transform3D(1.04907e-06, 8, 3.49691e-07, 0, -3.49691e-07, 8, 8, -1.04907e-06, -4.58565e-14, 0, 0.1, 0)
+target_position = Vector3(0, -0.15, 0)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.258819, 0.836516, 0.482963, -1.49012e-08, -0.5, 0.866025, 0.965926, -0.224144, -0.12941, 0, 5, 0)
+shadow_enabled = true
+
+[node name="Map" type="Node3D" parent="."]
+
+[node name="Ground" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+mesh = SubResource("BoxMesh_po31r")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map/Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ground/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_8dju4")
+
+[node name="Ground2" type="MeshInstance3D" parent="Map"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 21, 8.5, 0)
+mesh = SubResource("BoxMesh_po31r")
+skeleton = NodePath("../..")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Map/Ground2"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Map/Ground2/StaticBody3D"]
+shape = SubResource("ConcavePolygonShape3D_8dju4")
+
+[node name="id0" type="Node3D" parent="Map"]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, 0, 0, 0)
+
+[node name="Arc Quarter 1" type="Node3D" parent="Map/id0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 0, 0.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 1"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 1/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 1/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 1/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 3" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -2.25, 0, -1.75)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 3"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 3/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 3/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 3/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 6" type="Node3D" parent="Map/id0"]
+transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, -0.25, 0, -2.75)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 6"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 6/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 6/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 6/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 7" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0.75, 0, -2.75)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 7"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 7/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 7/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 7/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 8" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.75, 0, -1.75)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 8"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 8/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 8/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 8/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 9" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 1.75, 0, 1.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 9"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 9/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 9/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 9/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 10" type="Node3D" parent="Map/id0"]
+transform = Transform3D(1, 0, -7.10543e-15, 0, 1, 0, 7.10543e-15, 0, 1, -0.25, 0, 1.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 10"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 10/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 10/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 10/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 11" type="Node3D" parent="Map/id0"]
+transform = Transform3D(1, 0, -7.10543e-15, 0, 1, 0, 7.10543e-15, 0, 1, 0.75, 0, 1.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 11"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 11/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 11/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 11/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 12" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0.75, 0, 1.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 12"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 12/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 12/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 12/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 13" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0.75, 0, 1.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 13"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 13/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 13/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 13/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 14" type="Node3D" parent="Map/id0"]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 0.75, 0, 1.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 14"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 14/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 14/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 14/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 15" type="Node3D" parent="Map/id0"]
+transform = Transform3D(7.54979e-08, 0, 1, 0, 1, 0, -1, 0, 7.54979e-08, 1.75, 0, 2.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 15"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 15/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 15/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 15/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 16" type="Node3D" parent="Map/id0"]
+transform = Transform3D(1, 0, -1.74846e-07, 0, 1, 0, 1.74846e-07, 0, 1, 0.75, 0, 2.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 16"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 16/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 16/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 16/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 17" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-1, 0, 1.50996e-07, 0, 1, 0, -1.50996e-07, 0, -1, 0.75, 0, 0.25)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 17"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 17/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 17/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 17/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 4" type="Node3D" parent="Map/id0"]
+transform = Transform3D(7.54979e-08, 0, -1, 0, 1, 0, 1, 0, 7.54979e-08, 0.75, 0, -1.75)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 4"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 4/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 4/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 4/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 5" type="Node3D" parent="Map/id0"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.25, 0, -2.75)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 5"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/id0/Arc Quarter 5/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/id0/Arc Quarter 5/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/id0/Arc Quarter 5/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Wall 1" type="Node3D" parent="Map/id0"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, 0.25)
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/id0/Wall 1"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.5, 1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 2" type="CSGMesh3D" parent="Map/id0/Wall 1"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 3, 0.5, 3)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 3" type="CSGMesh3D" parent="Map/id0/Wall 1"]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 4.5, 0.5, 1.5)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 4" type="CSGMesh3D" parent="Map/id0/Wall 1"]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 3.5, 0.5, -2.5)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 5" type="CSGMesh3D" parent="Map/id0/Wall 1"]
+transform = Transform3D(-1, 0, -1.50996e-07, 0, 1, 0, 1.50996e-07, 0, -1, 0.5, 0.5, -2.5)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 6" type="CSGMesh3D" parent="Map/id0/Wall 1"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 2, 0.5, -4)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 7" type="CSGMesh3D" parent="Map/id0/Wall 1"]
+transform = Transform3D(-0.707107, 0.707107, -1.0677e-07, 0.707107, 0.707107, 1.0677e-07, 1.50996e-07, 0, -1, -0.125, 0.5, -2.5)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Wall 2" type="Node3D" parent="Map"]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -1.75, 0, 0.25)
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Wall 2"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0, 1.5, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 2" type="CSGMesh3D" parent="Map/Wall 2"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 3" type="CSGMesh3D" parent="Map/Wall 2"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 4" type="CSGMesh3D" parent="Map/Wall 2"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, -1.03, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 5" type="CSGMesh3D" parent="Map/Wall 2"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, -1.03, 1.5, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 6" type="CSGMesh3D" parent="Map/Wall 2"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0.97, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 7" type="CSGMesh3D" parent="Map/Wall 2"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0.97, 1.5, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 18" type="Node3D" parent="Map"]
+transform = Transform3D(8, 0, -5.68434e-14, 0, 8, 0, 5.68434e-14, 0, 8, -2, 8, 4)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Arc Quarter 18"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/Arc Quarter 18/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/Arc Quarter 18/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/Arc Quarter 18/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 19" type="Node3D" parent="Map"]
+transform = Transform3D(-3.49691e-07, 0, 8, 0, 8, 0, -8, 0, -3.49691e-07, -2, 8, 4)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Arc Quarter 19"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/Arc Quarter 19/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/Arc Quarter 19/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/Arc Quarter 19/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 20" type="Node3D" parent="Map"]
+transform = Transform3D(-8, 0, -6.99382e-07, 0, 8, 0, 6.99382e-07, 0, -8, -2, 8, -11)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Arc Quarter 20"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/Arc Quarter 20/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/Arc Quarter 20/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/Arc Quarter 20/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Wall 3" type="Node3D" parent="Map"]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -1.75, 8, 0.25)
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Wall 3"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0, 1.5, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 2" type="CSGMesh3D" parent="Map/Wall 3"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 3" type="CSGMesh3D" parent="Map/Wall 3"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 4" type="CSGMesh3D" parent="Map/Wall 3"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, -1.03, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 5" type="CSGMesh3D" parent="Map/Wall 3"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, -1.03, 1.5, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 6" type="CSGMesh3D" parent="Map/Wall 3"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0.97, 1.5, -1)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Mesh 7" type="CSGMesh3D" parent="Map/Wall 3"]
+transform = Transform3D(-1, 4.37114e-08, -8.74228e-08, -8.74228e-08, 1.91069e-15, 1, 4.37114e-08, 1, 1.91069e-15, 0.97, 1.5, 0)
+use_collision = true
+mesh = SubResource("BoxMesh_g5que")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 21" type="Node3D" parent="Map"]
+transform = Transform3D(8, 0, -5.68434e-14, 0, 8, 0, 5.68434e-14, 0, 8, -2, 16, 4)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Arc Quarter 21"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/Arc Quarter 21/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/Arc Quarter 21/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/Arc Quarter 21/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 22" type="Node3D" parent="Map"]
+transform = Transform3D(-3.49691e-07, 0, 8, 0, 8, 0, -8, 0, -3.49691e-07, -2, 16, 4)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Arc Quarter 22"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/Arc Quarter 22/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/Arc Quarter 22/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/Arc Quarter 22/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 23" type="Node3D" parent="Map"]
+transform = Transform3D(-8, 0, -6.99382e-07, 0, 8, 0, 6.99382e-07, 0, -8, -2, 16, -11)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Arc Quarter 23"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/Arc Quarter 23/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/Arc Quarter 23/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/Arc Quarter 23/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Arc Quarter 24" type="Node3D" parent="Map"]
+transform = Transform3D(1.04907e-06, 0, -8, 0, 8, 0, 8, 0, 1.04907e-06, -2, 16, -11)
+metadata/_edit_group_ = true
+
+[node name="Mesh 1" type="CSGMesh3D" parent="Map/Arc Quarter 24"]
+transform = Transform3D(0.999999, 0, 0.00132645, 0, 1, 0, -0.00132645, 0, 0.999999, 1.49012e-08, 0.5, -3.72529e-08)
+use_collision = true
+mesh = SubResource("TubeTrailMesh_ypm84")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 1" type="CSGMesh3D" parent="Map/Arc Quarter 24/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, 0, 0, 0)
+operation = 2
+mesh = SubResource("TubeTrailMesh_pbeen")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 2" type="CSGMesh3D" parent="Map/Arc Quarter 24/Mesh 1"]
+transform = Transform3D(0.999999, 0, -0.00132645, 0, 1, 0, 0.00132645, 0, 0.999999, -0.0999999, 0, -0.525133)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="Sub 4" type="CSGMesh3D" parent="Map/Arc Quarter 24/Mesh 1"]
+transform = Transform3D(0.00132641, 0, 0.999999, 0, 1, 0, -0.999999, 0, 0.00132641, 0.525, 0, 0.1)
+operation = 2
+mesh = SubResource("BoxMesh_3i0g5")
+material = SubResource("StandardMaterial3D_lxuqu")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_410x2")
